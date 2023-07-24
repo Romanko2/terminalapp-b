@@ -249,14 +249,14 @@ module.exports = {
                 return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.PASSWORD_REQUIRED } });
             }
 
-            if ((!req.body.role) || typeof req.body.role == undefined) {
-                return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.ROLE_REQUIRED } });
+            // if ((!req.body.role) || typeof req.body.role == undefined) {
+            //     return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.ROLE_REQUIRED } });
 
-            }
+            // }
 
 
             // , select: ['email', 'role', 'status', 'isVerified', 'password', 'firstName', 'lastName', 'fullName', 'image'] 
-            var userDetails = await Users.find({ where: { email: req.body.email.toLowerCase(), isDeleted: false, role: req.body.role } });
+            var userDetails = await Users.find({ where: { email: req.body.email.toLowerCase(), isDeleted: false } });
             var user = userDetails[0];
 
             if (!user) {
@@ -310,123 +310,9 @@ module.exports = {
         * @returns detail of the user
         * @description: Used to signup for group and participants
         */
-    signInByGroup: async (req, res) => {
-        try {
-
-            if ((!req.body.email) || typeof req.body.email == undefined) {
-                return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.EMAIL_REQUIRED } });
-            }
-
-            if ((!req.body.password) || typeof req.body.password == undefined) {
-                return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.PASSWORD_REQUIRED } });
-            }
-
-            if ((!req.body.role) || typeof req.body.role == undefined) {
-                return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.ROLE_REQUIRED } });
-
-            }
 
 
-            // , select: ['email', 'role', 'status', 'isVerified', 'password', 'firstName', 'lastName', 'fullName', 'image'] 
-            var userDetails = await Users.find({ where: { email: req.body.email.toLowerCase(), isDeleted: false, role: req.body.role } });
-            var user = userDetails[0];
 
-            if (!user) {
-                return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.INVALID_CRED } });
-            }
-
-            if (user && user.status != "active") {
-                return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.USERNAME_INACTIVE } });
-
-            }
-            if (user.isVerified == "N") {
-                return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.USERNAME_VERIFIED } });
-
-            }
-
-            if (!bcrypt.compareSync(req.body.password, user.password)) {
-
-                return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.INVALID_CRED } });
-
-            } else {
-                /**Genreating access token for the company and company_admin */
-
-                var token = jwt.sign({ user_id: user.id, fullName: user.fullName },
-                    { issuer: 'Jcsoftware', subject: user.email, audience: "L3Time" })
-                const refreshToken = jwt.sign({ user_id: user.id }, { issuer: 'refresh', subject: "user", audience: "L3Time" })
-                user.access_token = token;
-                user.refresh_token = refreshToken;
-                console.log(user, "user");
-                return
-                userSendOtp({
-                    email: newUser.email,
-                    fullName: newUser.fullName,
-                    id: newUser.id,
-                })
-                return res.status(200).json({
-                    "success": true,
-                    "code": 200,
-                    "message": constantObj.user.SUCCESSFULLY_LOGGEDIN,
-                    "data": user
-                });
-
-
-            }
-        }
-        catch (err) {
-            return res.status(400).json({
-                success: false,
-                error: { code: 400, message: "" + err }
-            })
-        }
-    },
-
-    registerByGroup: async (req, res) => {
-
-        if ((!req.body.email) || typeof req.body.email == undefined) {
-            return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.EMAIL_REQUIRED } });
-        }
-
-        if ((!req.body.password) || typeof req.body.password == undefined) {
-            return res.status(404).json({ "success": false, "error": { "code": 404, "message": constantObj.user.PASSWORD_REQUIRED } });
-        }
-        var date = new Date();
-        try {
-            var user = await Users.findOne({ email: req.body.email.toLowerCase(), isDeleted: false });
-            if (user) {
-                return res.status(400).json({ "success": false, "error": { "code": 400, "message": constantObj.user.EMAIL_EXIST } });
-            } else {
-                req.body['date_registered'] = date;
-                req.body['date_verified'] = date;
-                req.body["status"] = "active";
-                req.body["role"] = req.body.role;
-
-                // if (req.body.firstName && req.body.lastName) {
-                //     req.body["fullName"] = req.body.firstName + ' ' + req.body.lastName
-                // }
-
-
-                var newUser = await Users.create(req.body).fetch()
-                if (newUser) {
-                    userSendOtp({
-                        email: newUser.email,
-                        fullName: newUser.fullName,
-                        otp: generateOTP,
-                    })
-
-                    return res.status(200).json({
-                        "success": true,
-                        "code": 200,
-                        "data": newUser,
-                        "message": constantObj.user.SUCCESSFULLY_REGISTERED,
-                    });
-                }
-            }
-        } catch (err) {
-            console.log(err, "err");
-            return res.status(400).json({ "success": true, "code": 400, "error": err, });
-        }
-    },
 
     verifiyOtp: (req, res) => {
         try {
@@ -474,7 +360,7 @@ module.exports = {
                 .json({ success: false, error: { code: 400, message: "" + err } });
         }
     },
-    
+
 
     /*For Get User Details
     * Get Record from Login User Id
@@ -720,7 +606,7 @@ module.exports = {
         let query = {};
         query.id = req.param('id')
 
-        let userDetail = await Users.findOne(query).populate('facultyId').populate('collegeId').populate('addedBy')
+        let userDetail = await Users.findOne(query)
         //.log(userDetail);
         if (!userDetail) {
             return res.status(400).json({
@@ -792,7 +678,7 @@ module.exports = {
                 error: { code: 404, message: constantObj.user.USERNAME_REQUIRED },
             });
         }
-        Users.findOne({ email: data.email.toLowerCase(), isDeleted: false, role: { in: ["participants", "group", "user"] } }).then(
+        Users.findOne({ email: data.email.toLowerCase(), isDeleted: false, role: { in: ["user"] } }).then(
             (data) => {
                 if (data === undefined) {
                     return res.status(404).json({
@@ -902,7 +788,7 @@ module.exports = {
     editProfile: async (req, res) => {
         let data = req.body;
         try {
-            var id = req.param('id');
+            var id = req.body.id;
             if (!id || id == undefined) {
                 return res.status(404).json({
                     success: false,
@@ -994,7 +880,7 @@ module.exports = {
                 }
             }
         } catch (err) {
-            console.log(err,"==========err")
+            console.log(err, "==========err")
             return res.status(400).json({ success: true, code: 400, error: err });
         }
     },
@@ -1106,6 +992,7 @@ welcomeEmail = function (options) {
 
 userVerifyLink = async (options) => {
     let email = options.email;
+    message = ''
     message += `
     <body>
     <div>

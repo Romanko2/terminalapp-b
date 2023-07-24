@@ -53,7 +53,7 @@ module.exports = {
     },
     role: {
       type: 'string',
-      isIn: ['group', 'participants','admin','user'],
+      isIn: ['admin','user'],
     },
     verificationCode: {
       type: 'string',
