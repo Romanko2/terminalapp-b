@@ -34,9 +34,6 @@ module.exports = {
       type: "ref",
       autoUpdatedAt: true,
     },
-    campaignId:{
-      model: 'campaign',
-    },
     status: {
       type: 'string',
       isIn: ['accepted', 'pending'],

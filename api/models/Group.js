@@ -19,9 +19,6 @@ module.exports = {
     category:{
       model:"category",
     },
-    campaign:{
-      model:"campaign"
-    },
     status: {
       type: 'string',
       isIn: ['active', 'deactive'],
