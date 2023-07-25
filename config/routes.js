@@ -47,7 +47,7 @@ module.exports.routes = {
   'put /edit/profile': 'UsersController.editProfile',
 
 
-  /** CommonController */
+  /** CommonController routes*/
 
   'post /upload/image': 'CommonController.uploadImage',
   'put /change/status': 'CommonController.changeStatus',
@@ -55,7 +55,7 @@ module.exports.routes = {
   'post /uploadvideos': 'CommonController.uploadVideos',
   'get /verifyUser': 'UsersController.verifyUser',
 
-  /**CategoryController  */
+  /**CategoryController routes*/
 
   'post /category': 'CategoryController.addCategory',
   'get /categories': 'CategoryController.listCategory',
@@ -63,7 +63,7 @@ module.exports.routes = {
   'delete /category': 'CategoryController.deleteCategory',
   'get /category': 'CategoryController.categoryDetail',
 
-  /**groupController  */
+  /**groupController routes*/
 
   'post /group': 'GroupController.addGroup',
   'get /group/list': 'GroupController.listGroup',
@@ -71,7 +71,7 @@ module.exports.routes = {
   'delete /group': 'GroupController.deleteGroup',
   'get /group': 'GroupController.groupDetail',
 
-  // invitation Controller
+  // invitation Controller routes
   'post /inviteusers': 'InviteusersController.inviteusers',
   'post /invite/multiple/users': 'InviteusersController.invitemultipleusers',
   'get /getAll/Inviteusers': 'InviteusersController.getAllinviteusers',
@@ -79,11 +79,18 @@ module.exports.routes = {
   'get /get/qrcode': 'InviteusersController.generate_qrcode',
 
 
-  // product Controller
+  // product Controller routes
   'post /add/product': 'ProductController.addproduct',
   'get /getAll/Product': 'ProductController.getAllProduct',
   'delete /delete/Product': 'ProductController.deleteproduct',
   'get /get/Product': 'ProductController.productDetails',
   'put /edit/Product': 'ProductController.editProduct',
+
+  // Stripe Controller routes
+  'post /add/card': 'StripeController.addCard',
+  'get /getCards': 'StripeController.getCards',
+  'delete /Cards': 'StripeController.deleteCard',
+  // 'post /subscribe/newsletter':
+  //   'NewsletterSubscriptionController.subscribeToNewsLetter',
 
 };

@@ -91,5 +91,11 @@ module.exports.constants = {
         "NOT_INVITED":"This user is not invited",
         "ALREDY_INVITED":"This user is alredy invited",
         "USER_REGISTER":"This user is alredy register"
+      },
+
+      CARD:{
+        "CARD_ADDED":"Card added successfully",
+        "CARD_EXIST":"Card is already exist",
+        "CARD_DELETED":"Card is deleted successfully"
       }
 }

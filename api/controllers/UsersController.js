@@ -678,42 +678,32 @@ module.exports = {
                 error: { code: 404, message: constantObj.user.USERNAME_REQUIRED },
             });
         }
-        Users.findOne({ email: data.email.toLowerCase(), isDeleted: false, role: { in: ["user"] } }).then(
-            (data) => {
-                if (data === undefined) {
-                    return res.status(404).json({
-                        success: false,
-                        error: {
-                            code: 404,
-                            message: constantObj.user.INVALID_USER,
-                        },
-                    });
-                } else {
-                    var verificationCode = generateVeificationCode();
+        let find = await Users.findOne({ email: data.email.toLowerCase(), isDeleted: false, role: { in: ["user"] } })
+        console.log(find,"====================find")
 
-                    Users.update(
-                        { email: data.email, isDeleted: false },
-                        {
-                            verificationCode: verificationCode,
-                        }
-                    ).then(async (result) => {
-                        currentTime = new Date();
-                        await forgotPasswordEmail({
-                            email: data.email,
-                            verificationCode: verificationCode,
-                            fullName: data.fullName,
-                            id: data.id,
-                            time: currentTime.toISOString(),
-                        });
-                        return res.status(200).json({
-                            success: true,
-                            id: data.id,
-                            message: constantObj.user.VERIFICATION_SENT,
-                        });
-                    });
-                }
-            }
-        );
+        if (!find) {
+            return res.status(404).json({
+                success: false,
+                error: {
+                    code: 404,
+                    message: constantObj.user.INVALID_USER,
+                },
+            });
+        } else {
+            currentTime = new Date();
+            await forgotPasswordEmail({
+                email: find.email,
+                fullName: find.fullName,
+                id: find.id,
+                time: currentTime.toISOString(),
+            });
+            return res.status(200).json({
+                success: true,
+                id: find.id,
+                message: constantObj.user.VERIFICATION_SENT,
+            });
+
+        }
     },
 
     resetPassword: async (req, res) => {
@@ -1045,10 +1035,9 @@ userVerifyLink = async (options) => {
 };
 
 forgotPasswordEmail = function (options) {
-    console.log(options)
+    console.log(options,"===================options")
 
     var email = options.email;
-    var verificationCode = options.verificationCode;
     var fullName = options.fullName;
 
     if (!fullName) {
@@ -1088,7 +1077,7 @@ forgotPasswordEmail = function (options) {
     </div>
     <div style="text-align: center;">
     <div style="padding: 15px; border:3px solid rgb(64, 163, 201); border-radius: 8px; max-width: 356px;  color: #2759A7; margin-left: auto; margin-right:auto; box-shadow: 0px 0px 8px 0px #8080808a;">
-    Your verification code is <b>${verificationCode}</b>
+    Your verification code is <b></b>
   </div>
         <p style="
         color: #626262;

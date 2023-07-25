@@ -102,6 +102,9 @@ module.exports = {
       type: 'ref',
       autoCreatedAt: true,
     },
+    stripe_customer_id:{
+      type: 'string',
+    }
   },
 
   beforeCreate: function (user, next) {
