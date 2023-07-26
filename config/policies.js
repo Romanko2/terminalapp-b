@@ -31,4 +31,6 @@ module.exports.policies = {
     checkEmail: true,
     getAllUsers: true,
   },
+
+
 };

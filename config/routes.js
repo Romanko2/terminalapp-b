@@ -108,4 +108,13 @@ module.exports.routes = {
 
 
 
+  // trading api
+  'get /End_of_Day': 'TradingController.End_of_Day',
+  'get /Intraday': 'TradingController.Intraday',
+  'get /Tickers': 'TradingController.Tickers',
+  'get /Exchanges': 'TradingController.Exchanges',
+  'get /Currencies': 'TradingController.Currencies',
+  'get /Timezones': 'TradingController.Timezones',
+
+
 };

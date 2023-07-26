@@ -116,7 +116,7 @@ exports.upload_buffer_to_image = async (data) => {
 exports.generate_qr_code = async (options) => {
     // Converting the data into String format
     // let qrData = `${credentials.FRONT_WEB_URL}/view?id=${options.id}`;
-    let qrData ="https://play.google.com"
+    let qrData = "https://play.google.com"
     const generateQR = await QRCode.toDataURL(qrData);
     // let stringdata = typeof (options) != "string" ? JSON.stringify(options) : options;
     // const generateQR = await QRCode.toDataURL(stringdata);
@@ -127,4 +127,10 @@ exports.generate_qr_code = async (options) => {
 
     let image_data = await this.upload_buffer_to_image(image_paylaod);
     return image_data;
-}
+};
+// exports.End_of_Day  = async (options) => {
+//     let url = "http://api.marketstack.com/v1/eod"
+//         ? access_key = "14d6eb83f58a038c77ec12b38c5be776"
+//         & symbols = "TATASTEEL"
+
+// }
