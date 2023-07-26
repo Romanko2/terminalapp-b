@@ -291,8 +291,6 @@ module.exports = {
                     "message": constantObj.user.SUCCESSFULLY_LOGGEDIN,
                     "data": user
                 });
-
-
             }
         }
         catch (err) {
