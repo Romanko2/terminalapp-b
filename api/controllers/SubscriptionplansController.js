@@ -217,6 +217,7 @@ exports.getAllPlans = async (req, res) => {
                 $sort: { createdAt: -1 },
             },
         ]).toArray((err, totalResult) => {
+            
             if (err) {
                 return res.status(400).json({
                     success: false,
