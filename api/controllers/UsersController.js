@@ -171,7 +171,7 @@ module.exports = {
 
             user.access_token = token;
 
-            return res.status(200).json(
+            return res.status(200).json(  
                 {
                     "success": true,
                     "code": 200,
