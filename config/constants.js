@@ -97,5 +97,15 @@ module.exports.constants = {
         "CARD_ADDED":"Card added successfully",
         "CARD_EXIST":"Card is already exist",
         "CARD_DELETED":"Card is deleted successfully"
-      }
+      },
+      subscriptionplan: {
+        PLAN_ADD: 'Subscription plan added successfully.',
+        INVALID_CARD: 'This card is not valid',
+        ID_REQUIRED: 'Id Required.',
+        GET_PLAN_DATA: 'SubscriptionPlan fetch successfully.',
+        INVALID_ID: 'Invalid Id.',
+        PLAN_UPDATED: 'Subscription plan updated successfully.',
+        ALL_PLAN_DATA: 'All SubscriptionPlan fetch successfully.',
+        DELETE_PLAN: 'SubscriptionPlan deleted successfully.',
+      },
 }

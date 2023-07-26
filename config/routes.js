@@ -93,4 +93,19 @@ module.exports.routes = {
   // 'post /subscribe/newsletter':
   //   'NewsletterSubscriptionController.subscribeToNewsLetter',
 
+
+
+  /**SubscriptionPlansController routes */
+
+  'post /subscriptionplan': 'SubscriptionPlansController.addSubscriptionPlan',
+  'get /subscriptionplan': 'SubscriptionPlansController.getPlanById',
+  'put /subscriptionplan': 'SubscriptionPlansController.editsubscriptionPlan',
+  'get /subscriptionplans': 'SubscriptionPlansController.getAllPlans',
+  'get /subscriptionplans/frontend':
+    'SubscriptionPlansController.getAllPlansFrontend',
+  'delete /subscriptionplan': 'SubscriptionPlansController.removePlans',
+  'post /purchaseplan': 'SubscriptionPlansController.purchaseplan',
+
+
+
 };
