@@ -41,7 +41,7 @@ module.exports.constants = {
         "INVALID_IP" : "Ip address is not in whitelist.",
         "INVALID_LOCATION":"Unable to login .Please login at company\'s location.",
         "INVALID_IMAGE":"Invalid video type.",
-        "VERIFICATION_SENT" : "Verfication OTP has sent to your email Please crosscheck your email.",
+        "VERIFICATION_SENT" : "Verfication email has sent, Please crosscheck your email.",
         "NOT_EXIST":"User not exist.",
         "DELETED" : "User deleted successfully.",
         "SUCCESSFULLY_SENT":"Email sent successfully.",
