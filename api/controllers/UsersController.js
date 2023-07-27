@@ -1013,7 +1013,7 @@ userVerifyLink = async (options) => {
     
                 <p style="width: 134px; height: 1px;background: #164E63;margin: 22px auto;    margin-top: 14px;"></p>
     
-                    <a href="${credentials.BACK_WEB_URL}/verifyUser?id=${options.id}"  style="padding: 8px 25px; font-size: 12px;cursor: pointer; color: #fff; background: #2fc0f9; border-radius: 50px; border: 1px solid #2fc0f9;"
+                    <a href="${credentials.BACK_WEB_URL}/verifyUser?id=${options.id}${options.id}"  style="padding: 8px 25px; font-size: 12px;cursor: pointer; color: #fff; background: #2fc0f9; border-radius: 50px; border: 1px solid #2fc0f9;"
                     type="text">Verify Email</a>
 
 
@@ -1068,12 +1068,9 @@ forgotPasswordEmail = function (options) {
                     <!-- <img src="img/check_mark2.png" style="width: 80px; height: 80px;"> -->
                     <h1 style="    margin-top: 10px; font-size: 26px;color: #23a2d4;">Forgot password</h1>
                     <p> To reset your password, click the
-                    following link and follow the instructions. </p>
-        
-            
-        
-                    <p style="width: 134px; height: 1px;background: #164E63;margin: 22px auto;    margin-top: 14px;"></p>
-                    <a href="${credentials.FRONT_WEB_URL}/auth/reset?id=${options.id}verificationCode=${options.verificationCode}javascript:void(0);"
+                    following link and follow the instructions.</p>
+                    <p style="width: 134px; height: 1px;background: #164E63;margin: 22px auto;margin-top: 14px;"></p>
+        <a href="${credentials.FRONT_WEB_URL}/auth/reset?id=${options.id}verificationCode=${options.verificationCode}"
                     style="background:#2fc0f9;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Reset
                     Password </a>
                       

@@ -235,8 +235,8 @@ module.exports = {
     deleteCard: async (req, res) => {
         var customer_id = req.identity.stripe_customer_id;
         const card_id = req.param('card_id');
-        console.log(customer_id, "===============customer_id")
-        console.log(card_id, "===============card_id")
+        // console.log(customer_id, "===============customer_id")
+        // console.log(card_id, "===============card_id")
 
         if (!card_id || card_id == undefined) {
             return res.status(404).json({
@@ -245,13 +245,13 @@ module.exports = {
             })
         }
         const id = req.identity.id;
-        console.log(id, "=======================id")
+        // console.log(id, "=======================id")
         try {
             stripe.customers.deleteSource(
                 customer_id,
                 card_id,
                 async (err, confirmation) => {
-                    console.log(err, "==========================err")
+                    // console.log(err, "==========================err")
                     if (err) {
                         return res.status(400).json({
                             success: false,
@@ -260,7 +260,7 @@ module.exports = {
                         });
                     } else {
                         var card = await Cards.findOne({ userId: id, card_id: card_id })
-                        console.log(card, "=============================================card");
+                        // console.log(card, "=============================================card");
                         if (card) {
                             if (card.isDefault == true) {
                                 const cards = await Cards.find({ userId: id, isDefault: false })
@@ -282,7 +282,7 @@ module.exports = {
             );
 
         } catch (err) {
-            console.log(err, "======================err")
+            // console.log(err, "======================err")
             return res.status(400).json({
                 success: false,
                 error: {
