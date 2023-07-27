@@ -757,10 +757,10 @@ module.exports = {
 
             if (user) {
                 Users.update({ id: id }, { isVerified: 'Y', }).then(verified => {
-                    return res.redirect(constant.FRONT_WEB_URL)
+                    return res.redirect(`${credentials.FRONT_WEB_URL}/auth/login?id=${id}`)
                 })
             } else {
-                return res.redirect(constant.FRONT_WEB_URL)
+                return res.redirect(`${credentials.FRONT_WEB_URL}/auth/login?id=${id}`)
             }
         })
     },
@@ -1013,7 +1013,7 @@ userVerifyLink = async (options) => {
     
                 <p style="width: 134px; height: 1px;background: #164E63;margin: 22px auto;    margin-top: 14px;"></p>
     
-                    <a href="${credentials.FRONT_WEB_URL}/auth/login?id=${options.id}${options.id}"  style="padding: 8px 25px; font-size: 12px;cursor: pointer; color: #fff; background: #2fc0f9; border-radius: 50px; border: 1px solid #2fc0f9;"
+                    <a href="${credentials.BACK_WEB_URL}/verifyUser?id=${options.id}"  style="padding: 8px 25px; font-size: 12px;cursor: pointer; color: #fff; background: #2fc0f9; border-radius: 50px; border: 1px solid #2fc0f9;"
                     type="text">Verify Email</a>
                 <p style="color: #626262;font-size: 11px;margin-top: 3rem;">Got Questions? Contact our support team!</p>
     
