@@ -99,6 +99,7 @@ module.exports.routes = {
 
   'post /subscriptionplan': 'SubscriptionPlansController.addSubscriptionPlan',
   'get /subscriptionplan': 'SubscriptionPlansController.getPlanById',
+  'get /purchase/plan': 'SubscriptionPlansController.getPurchasedPlan',
   'put /subscriptionplan': 'SubscriptionPlansController.editsubscriptionPlan',
   'get /subscriptionplans': 'SubscriptionPlansController.getAllPlans',
   'get /subscriptionplans/frontend':

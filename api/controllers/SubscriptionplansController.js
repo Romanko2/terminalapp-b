@@ -124,7 +124,7 @@ exports.getPlanById = async (req, res) => {
         });
     }
     catch (err) {
-        console.log(err,"=================err")
+        console.log(err, "=================err")
         return res.status(400).json({
             success: false,
             error: { message: "" + err },
@@ -187,7 +187,7 @@ exports.getAllPlans = async (req, res) => {
         }
 
         // query.$and.push({ isDeleted: false })
-        console.log(query,"=================query")
+        console.log(query, "=================query")
 
         db.collection("subscriptionplans").aggregate([
             {
@@ -217,7 +217,7 @@ exports.getAllPlans = async (req, res) => {
                 $sort: { createdAt: -1 },
             },
         ]).toArray((err, totalResult) => {
-            
+
             if (err) {
                 return res.status(400).json({
                     success: false,
@@ -572,6 +572,11 @@ exports.purchaseplan = async (req, res) => {
             };
 
             let add_subscription = await Subscription.create(create_subscription_payload).fetch();
+            if (add_subscription) {
+                let update_subscription_plan = await Subscriptionplans.updateOne({ id: subscription_plan_id}, {isPurchased: "true", })
+                // console.log(update_subscription_plan,"==============update_subscription_plan")
+
+            }
             // console.log(add_subscription, "========================add_subscription")
             return res.status(200).json({
                 success: true,
@@ -585,6 +590,35 @@ exports.purchaseplan = async (req, res) => {
         return res.status(400).json({
             success: false,
             error: { message: "" + err },
+        });
+    }
+};
+exports.getPurchasedPlan = async (req, res) => {
+    try {
+        let id = req.param('id');
+
+        if (!id) {
+            throw constants.subscriptionplan.ID_REQUIRED;
+        }
+
+
+        let find_plan = await Subscription.findOne({ id: id });
+        if (find_plan) {
+            return res.status(200).json({
+                success: true,
+                message: constants.subscriptionplan.GET_PLAN_DATA,
+                data: find_plan
+            });
+        }
+
+        throw constants.subscriptionplan.INVALID_ID;
+    }
+
+    catch (err) {
+        console.log(err);
+        return res.status(400).json({
+            success: false,
+            error: { message: err },
         });
     }
 };
