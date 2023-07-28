@@ -203,7 +203,7 @@ exports.getAllPlans = async (req, res) => {
                     createdAt: "$createdAt",
                     updatedAt: "$updatedAt",
                     status: "$status",
-                    isPurchased:"$isPurchased",
+                    isPurchased: "$isPurchased",
                     trial_period_days: "$trial_period_days",
                     user: "$user",
                     description: "$description",
@@ -239,7 +239,7 @@ exports.getAllPlans = async (req, res) => {
                         createdAt: "$createdAt",
                         updatedAt: "$updatedAt",
                         status: "$status",
-                        isPurchased:"$isPurchased",
+                        isPurchased: "$isPurchased",
                         trial_period_days: "$trial_period_days",
                         user: "$user",
                         description: "$description",
@@ -575,7 +575,7 @@ exports.purchaseplan = async (req, res) => {
 
             let add_subscription = await Subscription.create(create_subscription_payload).fetch();
             if (add_subscription) {
-                let update_subscription_plan = await Subscriptionplans.updateOne({ id: subscription_plan_id}, {isPurchased: "true", })
+                let update_subscription_plan = await Subscriptionplans.updateOne({ id: subscription_plan_id }, { isPurchased: "true", })
                 // console.log(update_subscription_plan,"==============update_subscription_plan")
 
             }
@@ -657,6 +657,179 @@ exports.removePlans = async (req, res) => {
         });
     }
 };
+
+
+exports.getAllPurchase = async (req, res) => {
+    try {
+
+        let search = req.param('search');
+        let page = req.param('page');
+        let count = req.param('count');
+        let status = req.param('status');
+        if (!page) {
+            page = 1;
+        }
+        if (!count) {
+            count = 10;
+        }
+        let skipNo = (page - 1) * count;
+        let query = {};
+
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, '$options': 'i' } },
+            ]
+        }
+
+        if (status) {
+            query.status = status
+        }
+        db.collection("subscription").aggregate([
+            {
+                $project: {
+                    id: "$_id",
+                    user_id: "$user_id",
+                    subscription_plan_id: "$subscription_plan_id",
+                    stripe_subscription_id: "$stripe_subscription_id",
+                    addedBy: "$addedBy",
+                    name: "$name",
+                    amount: "$amount",
+                    interval: "$interval",
+                    interval_count: "$interval_count",
+                    trial_period_days: "$trial_period_days",
+                    valid_upto: "$valid_upto",
+                    createdAt: "$createdAt",
+                    updatedAt: "$updatedAt",
+                    status: "$status",
+                    description: "$description",
+                    trial_period_end_date: "$trial_period_end_date",
+                    updatedBy: "$updatedBy"
+                },
+            },
+            {
+                $match: query,
+            },
+            {
+                $sort: { createdAt: -1 },
+            },
+        ]).toArray((err, totalResult) => {
+
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    error: { message: err },
+                });
+            }
+            db.collection("subscription").aggregate([
+                {
+                    $project: {
+                        id: "$_id",
+                        user_id: "$user_id",
+                        subscription_plan_id: "$subscription_plan_id",
+                        stripe_subscription_id: "$stripe_subscription_id",
+                        addedBy: "$addedBy",
+                        name: "$name",
+                        amount: "$amount",
+                        interval: "$interval",
+                        interval_count: "$interval_count",
+                        trial_period_days: "$trial_period_days",
+                        valid_upto: "$valid_upto",
+                        createdAt: "$createdAt",
+                        updatedAt: "$updatedAt",
+                        status: "$status",
+                        description: "$description",
+                        trial_period_end_date: "$trial_period_end_date",
+                        updatedBy: "$updatedBy"
+                    },
+                },
+                {
+                    $match: query,
+                },
+                {
+                    $sort: { createdAt: -1 },
+                },
+                {
+                    $skip: skipNo,
+                },
+                {
+                    $limit: Number(count),
+                },
+            ]).toArray((err, result) => {
+                if (err) {
+                    return res.status(400).json({
+                        success: false,
+                        error: { message: err },
+                    });
+                } else {
+
+                    let resData = {
+                        total_count: totalResult.length,
+                        data: result
+                    }
+
+                    if (!req.param('page') && !req.param('count')) {
+                        resData = {
+                            total_count: totalResult.length,
+                            data: result
+                        }
+                        return res.status(200).json({
+                            success: true,
+                            message: constants.subscriptionplan.ALL_PLAN_DATA,
+                            data: resData
+                        });
+                    }
+
+                    return res.status(200).json({
+                        success: true,
+                        message: constants.subscriptionplan.ALL_PLAN_DATA,
+                        data: resData
+                    });
+                }
+            });
+        })
+    }
+    catch (err) {
+        return res.status(400).json({
+            success: false,
+            error: { message: err },
+        });
+    }
+};
+exports.myActiveSubscription = async (req, res) => {
+    try {
+        const user_id = req.param('user_id');
+        if (!user_id) {
+            throw constants.SUBSCRIPTION_PLAN.USER_ID_REQUIRED;
+        }
+
+        let get_user = await Users.findOne({ id: user_id });
+        if (!get_user) {
+            throw constants.SUBSCRIPTION_PLAN.INVALID_USER_ID;
+        }
+
+        let get_user_active_subscription = await Subscription.findOne({
+            user_id: user_id,
+            status: "active",
+        });
+
+        if (get_user_active_subscription) {
+            return res.status(200).json({
+                success: true,
+                message:constants.SUBSCRIPTION_PLAN.ACTIVE_SUBSCRIPTION_FETCHED,
+                data : get_user_active_subscription
+            });
+            
+        }
+        throw constants.SUBSCRIPTION_PLAN.NO_SUBSCRIPTION_FOUND;
+    } catch (error) {
+       
+        return res.status(400).json({
+            success: false,
+            error: {message: '' + error  },
+        });
+    }
+}
+
 
 
 

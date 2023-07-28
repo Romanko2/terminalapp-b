@@ -15,6 +15,7 @@ const reader = require("xlsx");
 var fs = require('fs');
 const readXlsxFile = require('read-excel-file/node');
 const { sendEmail } = require('../controllers/SmtpController');
+const { waitForDebugger } = require('inspector');
 var ObjectId = require('mongodb').ObjectID;
 
 generateVeificationCode = function () {
@@ -171,7 +172,7 @@ module.exports = {
 
             user.access_token = token;
 
-            return res.status(200).json(  
+            return res.status(200).json(
                 {
                     "success": true,
                     "code": 200,
@@ -369,7 +370,19 @@ module.exports = {
             return res.status(400).json({ "success": false, "error": { "code": 400, "message": "Id is required" } });
         }
 
-        var userDetails = await Users.find({ where: { id: id } })
+        var userDetails = await Users.findOne({ id: id } )
+
+        let get_subscription = await Subscription.findOne({ user_id: id, status: "active" })
+        // console.log(userDetails, "===============userDetails")
+
+    //    let userDetails2 = Object.assign({}, userDetails)       
+        userDetails.subscribe_status = get_subscription ? get_subscription.status : "cancelled";
+        if (get_subscription) {
+            userDetails.subscription_plan_id = get_subscription.subscription_plan_id;
+
+        }
+        // console.log(userDetails, "===============userDetails")
+
 
         return res.status(200).json(
             {
@@ -699,7 +712,7 @@ module.exports = {
                 email: find.email,
                 fullName: find.fullName,
                 id: find.id,
-                verificationCode:verificationCode,
+                verificationCode: verificationCode,
                 time: currentTime.toISOString(),
             });
             return res.status(200).json({
@@ -879,10 +892,6 @@ module.exports = {
             return res.status(400).json({ success: true, code: 400, error: err });
         }
     },
-
-
-
-
 };
 
 welcomeEmail = function (options) {

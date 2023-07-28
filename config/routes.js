@@ -106,6 +106,8 @@ module.exports.routes = {
     'SubscriptionPlansController.getAllPlansFrontend',
   'delete /subscriptionplan': 'SubscriptionPlansController.removePlans',
   'post /purchaseplan': 'SubscriptionPlansController.purchaseplan',
+  'get /purchaseplans': 'SubscriptionPlansController.getAllPurchase',
+  'get /activePlan': 'SubscriptionPlansController.myActiveSubscription',
 
 
 
