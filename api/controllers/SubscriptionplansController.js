@@ -273,7 +273,9 @@ exports.getAllPlans = async (req, res) => {
            
                     await (async function () {
                         for await (let data of result ){
-                          if(get_subscription && get_subscription.id == data.id){
+//console.log( get_subscription.id,data.id);
+
+                          if(get_subscription && get_subscription.subscription_plan_id == data.id){
                             data.isActive = true;        
                            }else{
                             data.isActive = false
