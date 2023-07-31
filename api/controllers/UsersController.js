@@ -1077,7 +1077,7 @@ forgotPasswordEmail = function (options) {
                     <p> To reset your password, click the
                     following link and follow the instructions.</p>
                     <p style="width: 134px; height: 1px;background: #164E63;margin: 22px auto;margin-top: 14px;"></p>
-        <a href="${credentials.FRONT_WEB_URL}/auth/reset?id=${options.id}&verificationCode=${options.verificationCode}"
+        <a href="${credentials.BACK_WEB_URL}/verifyUser?id=${options.id}&verificationCode=${options.verificationCode}"
                     style="background:#2fc0f9;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">Reset
                     Password </a>
                       
