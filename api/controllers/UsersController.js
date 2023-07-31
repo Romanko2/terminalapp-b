@@ -650,7 +650,7 @@ module.exports = {
                 "success": true,
                 "code": 200,
                 "data": userDetail,
-                "activPlan":activPlan ? true : false,
+                "activPlan":get_user_active_subscription ? true : false,
                 "activPlanDetails":activPlan,
 
             });
