@@ -746,11 +746,15 @@ module.exports = {
             var newPassword = data.newPassword;
 
             let user = await Users.findOne({ id: data.id, isDeleted: false });
+            var verificationCode = user.verificationCode;
+            var newCode = data.verificationCode;
+            var verificationCodes = verificationCode.trim();
+            var newCodes = newCode.trim();
 
-            console.log(data.verificationCode)
-            console.log(code)
-
-            if (!user || user.verificationCode !== code) {
+            if (user && verificationCodes != newCodes) {
+                console.log(user.verificationCode ,code);
+                console.log(typeof data.verificationCode, data.verificationCode)
+                console.log(typeof code, code)
                 return res.status(404).json({
                     success: false,
                     error: {
