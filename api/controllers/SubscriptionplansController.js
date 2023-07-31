@@ -259,13 +259,29 @@ exports.getAllPlans = async (req, res) => {
                 {
                     $limit: Number(count),
                 },
-            ]).toArray((err, result) => {
+            ]).toArray(async (err, result) => {
                 if (err) {
                     return res.status(400).json({
                         success: false,
                         error: { message: err },
                     });
                 } else {
+
+            let get_subscription = await Subscription.findOne({ user_id: req.identity.id, status: "active" })
+
+           // console.log(get_subscription);
+           
+                    await (async function () {
+                        for await (let data of result ){
+                          if(get_subscription && get_subscription.id == data.id){
+                            data.isActive = true;        
+                           }else{
+                            data.isActive = false
+                          }
+                        }
+                      })();
+
+
 
                     let resData = {
                         total_count: totalResult.length,
