@@ -119,7 +119,7 @@ module.exports = {
                         "success": true,
                         "code": 200,
                         "data": newUser,
-                        "message": constantObj.user.SUCCESSFULLY_REGISTERED,
+                        "message": constantObj.user.SUCCESSFULLYREGISTERED,
                     });
                 }
             }
