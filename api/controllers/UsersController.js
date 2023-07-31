@@ -642,8 +642,8 @@ module.exports = {
                 "success": true,
                 "code": 200,
                 "data": userDetail,
-                "anyactivPlan":activPlan ? true : false,
-                "activPlan":activPlan,
+                "activPlan":activPlan ? true : false,
+                "activPlanDetails":activPlan,
 
             });
         }
