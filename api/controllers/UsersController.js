@@ -378,7 +378,12 @@ module.exports = {
 
         }        
         userDetails.subscribe_status = get_subscription ? get_subscription.status : "cancelled";
-        // console.log(userDetails, "===============userDetails")
+        const cards = await Cards.find({ isDefault: true,userId :userDetails.id, })
+        if(cards && cards.length > 0){
+            userDetails.cards =cards[0]                
+        }else{
+            userDetails.cards={};
+        }
 
 
         return res.status(200).json(
