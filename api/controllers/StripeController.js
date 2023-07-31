@@ -114,6 +114,7 @@ module.exports = {
                                     exp_month: customer.exp_month,
                                     exp_year: customer.exp_year,
                                     brand: customer.brand,
+                                    cardHolderName:req.body.cardHolderName,
                                     firstName: req.body.firstName,
                                     lastName: req.body.lastName,
                                     zipCode: req.body.zipCode,
@@ -121,7 +122,7 @@ module.exports = {
                                     updatedAt: new Date(),
                                     // isDefault: true,
                                 };
-                                // console.log(req.identity.customer_id, "-----------------------addedCard")
+                                console.log(addedCard, "-----------------------addedCard")
                                 const existedUserCards = await Cards.find({ userId: req.identity.id })
                                 if (existedUserCards && existedUserCards.length == 0) {
                                     addedCard.isDefault = true
@@ -167,6 +168,7 @@ module.exports = {
                                     last4: token.card.last4,
                                     exp_month: token.card.exp_month,
                                     exp_year: token.card.exp_year,
+                                    cardHolderName:req.body.cardHolderName,
                                     brand: token.card.brand,
                                     createdAt: new Date(),
                                     updatedAt: new Date(),
