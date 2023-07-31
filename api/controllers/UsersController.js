@@ -626,10 +626,25 @@ module.exports = {
                 "message": "User not exist."
             });
         } else {
+
+            let get_user_active_subscription = await Subscription.findOne({
+                user_id: userDetail.id,
+                status: "active",
+            });
+            var activPlan =""; 
+            if(get_user_active_subscription){
+                activPlan = get_user_active_subscription;
+            }else{
+                activPlan = "No subscription found"
+            }
+
             return res.status(200).json({
                 "success": true,
                 "code": 200,
-                "data": userDetail
+                "data": userDetail,
+                "anyactivPlan":activPlan ? true : false,
+                "activPlan":activPlan,
+
             });
         }
 
