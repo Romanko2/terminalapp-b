@@ -251,7 +251,7 @@ exports.getAllPlans = async (req, res) => {
                     $match: query,
                 },
                 {
-                    $sort: { createdAt: -1 },
+                    $sort: { createdAt: 1 },
                 },
                 {
                     $skip: skipNo,
