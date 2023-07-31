@@ -372,15 +372,12 @@ module.exports = {
 
         var userDetails = await Users.findOne({ id: id } )
 
-        let get_subscription = await Subscription.findOne({ user_id: id, status: "active" })
-        // console.log(userDetails, "===============userDetails")
-
-    //    let userDetails2 = Object.assign({}, userDetails)       
-        userDetails.subscribe_status = get_subscription ? get_subscription.status : "cancelled";
+        let get_subscription = await Subscription.findOne({ user_id: id, status: "active" })       
         if (get_subscription) {
             userDetails.subscription_plan_id = get_subscription.subscription_plan_id;
 
-        }
+        }        
+        userDetails.subscribe_status = get_subscription ? get_subscription.status : "cancelled";
         // console.log(userDetails, "===============userDetails")
 
 
@@ -636,6 +633,12 @@ module.exports = {
                 activPlan = get_user_active_subscription;
             }else{
                 activPlan = "No subscription found"
+            }
+            const cards = await Cards.find({ isDefault: true,userId :userDetail.id, })
+            if(cards && cards.length > 0){
+                userDetail.cards =cards[0]                
+            }else{
+                userDetail.cards={};
             }
 
             return res.status(200).json({
