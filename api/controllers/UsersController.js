@@ -888,7 +888,6 @@ module.exports = {
                 }
             }
         } catch (err) {
-            console.log(err, "==========err")
             return res.status(400).json({ success: true, code: 400, error: err });
         }
     },
