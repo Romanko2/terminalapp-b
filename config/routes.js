@@ -90,6 +90,8 @@ module.exports.routes = {
   'post /add/card': 'StripeController.addCard',
   'get /getCards': 'StripeController.getCards',
   'delete /Cards': 'StripeController.deleteCard',
+  'put /primary/card': 'StripeController.setPrimaryCard',
+
   // 'post /subscribe/newsletter':
   //   'NewsletterSubscriptionController.subscribeToNewsLetter',
 

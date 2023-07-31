@@ -253,7 +253,7 @@ module.exports = {
                 customer_id,
                 card_id,
                 async (err, confirmation) => {
-                    // console.log(err, "==========================err")
+                // console.log(err,confirmation, "==========================err")
                     if (err) {
                         return res.status(400).json({
                             success: false,
@@ -262,7 +262,7 @@ module.exports = {
                         });
                     } else {
                         var card = await Cards.findOne({ userId: id, card_id: card_id })
-                        // console.log(card, "=============================================card");
+                      //  console.log(card, "=============================================card");
                         if (card) {
                             if (card.isDefault == true) {
                                 const cards = await Cards.find({ userId: id, isDefault: false })
@@ -294,6 +294,46 @@ module.exports = {
             });
         }
     },
+
+
+    setPrimaryCard: async (req, res) => {
+        const customer_id = req.identity.stripe_customer_id;
+        const card_id = req.body.card_id;
+        if (!card_id || card_id == undefined) {
+          return res.status(404).json({
+            success: false,
+            error: { code: 404, message: constantObj.messages.PAYLOAD_MISSING },
+          });
+        }
+
+        try {
+          const updatedcustomer = await stripe.customers.update(customer_id, {
+            default_source: card_id,
+          });
+
+
+
+          markingOthersDefaultFalse = await Cards.update(
+            { userId: req.identity.id },
+            { isDefault: false }
+          );
+          const defaultCard = await Cards.update(
+            { userId: req.identity.id, card_id: card_id },
+            { isDefault: true }
+          );
+          return res.status(200).json({
+            success: true,
+            code: 200,
+            message: constantObj.CARD.DEFAULT_CARD,
+          });
+        } catch (err) {
+          console.log(err, "er");
+          return res
+            .status(400)
+            .json({ success: false, error: { code: 404, message: "" + err } });
+        }
+      },
+
 
     // chargePayment: async (req, res) => {
 
