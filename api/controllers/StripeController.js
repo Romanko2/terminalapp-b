@@ -172,7 +172,7 @@ module.exports = {
                                     brand: token.card.brand,
                                     createdAt: new Date(),
                                     updatedAt: new Date(),
-                                    isDefault: true,
+                                    isDefault: false,
                                 }
 
                                 Users.update(
