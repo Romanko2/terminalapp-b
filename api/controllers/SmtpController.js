@@ -143,7 +143,7 @@ module.exports = {
                     }
                 }));
                 transport.sendMail({
-                    from: 'trading  <' + smtp[0].user + '>',
+                    from: 'Trading  <' + smtp[0].user + '>',
                     to: to,
                     subject: subject,
                     html: message
