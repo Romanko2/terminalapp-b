@@ -21,7 +21,6 @@ module.exports = {
         error: { code: 404, message: "Id is required" },
       });
     }
-
     Users.findOne({ id: id }).then(async (user) => {
       if (user) {
         if (user.status != "active") {
