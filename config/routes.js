@@ -46,6 +46,8 @@ module.exports.routes = {
   'get /user/detail': 'UsersController.userDetail',
   'put /edit/profile': 'UsersController.editProfile',
 
+  'get /auto/login': 'UsersController.autoLogin',
+  
 
   /** CommonController routes*/
 

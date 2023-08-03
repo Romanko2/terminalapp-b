@@ -918,6 +918,17 @@ module.exports = {
             return res.status(400).json({ success: true, code: 400, error: err });
         }
     },
+
+      /**
+   *
+   * @param {*} req {id:""}
+   * @param {*} res {data:contain user detail}
+   * @description : Used to autoLogin the user with their slug
+   *
+   */
+  autoLogin: (req, res) => {
+    API(UsersServices.autoLogin, req, res);
+  },
 };
 
 welcomeEmail = function (options) {
