@@ -247,49 +247,38 @@ module.exports = {
         const id = req.identity.id;
         // console.log(id, "=======================id")
         try {
-            var card = await Cards.findOne({card_id: card_id })
-                        if (card) {
-                            if (card.isDefault == true) {
-                                const cards = await Cards.find({ userId: id, isDefault: false })
-                                console.log(cards.length)
-                                if (cards && cards.length > 0) {
-                                    updatedCard = await Cards.update({ id: cards[0].id }, { isDefault: true })
-                                }
-                            }
-                            console.log({ userId: id, card_id: card_id });
-                            const removedCard = await Cards.destroy({ userId: id, card_id: card_id })
-                        }
+            
 
-                        stripe.customers.deleteSource(
+               stripe.customers.deleteSource(
                 customer_id,
                 card_id,
                 async (err, confirmation) => {
                 // console.log(err,confirmation, "==========================err")
-                    // if (err) {
-                    //     return res.status(400).json({
-                    //         success: false,
-                    //         code: 400,
-                    //         message: '' + err,
-                    //     });
-                    // } else {
-                    // var card = await Cards.findOne({ userId: id, card_id: card_id })
-                    // if (card) {
-                    //     if (card.isDefault == true) {
-                    //         const cards = await Cards.find({ userId: id, isDefault: false })
-                    //         console.log(cards.length)
-                    //         if (cards && cards.length > 0) {
-                    //             updatedCard = await Cards.update({ id: cards[0].id }, { isDefault: true })
-                    //         }
-                    //     }
-                    //     const removedCard = await Cards.destroy({ userId: id, card_id: card_id })
+                    if (err) {
+                        return res.status(400).json({
+                            success: false,
+                            code: 400,
+                            message: '' + err,
+                        });
+                    } else {
+                    var card = await Cards.findOne({ userId: id, card_id: card_id })
+                    if (card) {
+                        if (card.isDefault == true) {
+                            const cards = await Cards.find({ userId: id, isDefault: false })
+                            console.log(cards.length)
+                            if (cards && cards.length > 0) {
+                                updatedCard = await Cards.update({ id: cards[0].id }, { isDefault: true })
+                            }
+                        }
+                        const removedCard = await Cards.destroy({ userId: id, card_id: card_id })
 
-                    //     return res.status(200).json({
-                    //         success: true,
-                    //         message: constantObj.CARD.CARD_DELETED
-                    //     })
-                    // }
+                        return res.status(200).json({
+                            success: true,
+                            message: constantObj.CARD.CARD_DELETED
+                        })
+                    }
 
-                    //}
+                    }
                     return res.status(200).json({
                         success: true,
                         message: constantObj.CARD.CARD_DELETED
