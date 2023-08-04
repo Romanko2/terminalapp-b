@@ -254,13 +254,13 @@ module.exports = {
                 card_id,
                 async (err, confirmation) => {
                 // console.log(err,confirmation, "==========================err")
-                    if (err) {
-                        return res.status(400).json({
-                            success: false,
-                            code: 400,
-                            message: '' + err,
-                        });
-                    } else {
+                    // if (err) {
+                    //     return res.status(400).json({
+                    //         success: false,
+                    //         code: 400,
+                    //         message: '' + err,
+                    //     });
+                    // } else {
                     var card = await Cards.findOne({ userId: id, card_id: card_id })
                     if (card) {
                         if (card.isDefault == true) {
@@ -276,7 +276,7 @@ module.exports = {
                             success: true,
                             message: constantObj.CARD.CARD_DELETED
                         })
-                    }
+                    //}
 
                     }
                     return res.status(200).json({

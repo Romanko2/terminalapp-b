@@ -11,11 +11,26 @@ const credentials = require('../../config/local');
 module.exports = {
     End_of_Day: async (req, res) => {
         try{
+            
+            let month = req.param("month");        
             let symbol = req.param("symbol");
             let limit = req.param("limit");
             let offset = req.param("offset");
-            let url = `http://api.marketstack.com/v1/eod?access_key=${credentials.access_key}&symbols=${symbol}&limit=${limit}&offset=${offset}`
 
+
+            let url = "";  
+            if(month){
+                var currentDate = new Date();
+                var d = new Date();
+                d.setMonth(d.getMonth() - Number(month));
+                const previousDate = d.toISOString().split( "T" );
+                const currentDates = currentDate.toISOString().split( "T" );
+                var date_from = previousDate[ 0 ];
+                var date_to = currentDates[ 0 ];
+                url = `http://api.marketstack.com/v1/eod?access_key=${credentials.access_key}&symbols=${symbol}&limit=${limit}&offset=${offset}&date_from=${date_from}&date_to=${date_to}`;
+            }else{
+                url = `http://api.marketstack.com/v1/eod?access_key=${credentials.access_key}&symbols=${symbol}&limit=${limit}&offset=${offset}`;
+            }
 
            let {data} = await axios.get(url)
         
