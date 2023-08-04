@@ -56,7 +56,7 @@ module.exports.routes = {
   'delete /delete': 'CommonController.commonDelete',
   'post /uploadvideos': 'CommonController.uploadVideos',
   'get /verifyUser': 'UsersController.verifyUser',
-  "get /image/delete": "CommonController.imageDeleteFromFolder",
+  "delete /image/delete": "CommonController.imageDeleteFromFolder",
 
 
   /**CategoryController routes*/
