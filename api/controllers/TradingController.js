@@ -38,10 +38,15 @@ module.exports = {
             let symbol = req.param("symbol");
             let limit = req.param("limit");
             let offset = req.param("offset");
-            let url = `http://api.marketstack.com/v1/intraday?access_key=${credentials.access_key}&symbols=${symbol}&limit=${limit}&offset=${offset}`
-
-
-           let {data} = await axios.get(url)
+            let dateWise = req.param("date");
+            let url ="";
+            if(dateWise){
+                url = `http://api.marketstack.com/v1/intraday/${dateWise}?access_key=${credentials.access_key}&symbols=${symbol}`
+            }else{
+                url = `http://api.marketstack.com/v1/intraday?access_key=${credentials.access_key}&symbols=${symbol}&limit=${limit}&offset=${offset}`
+            }
+       
+            let {data} = await axios.get(url)
         
             return res.status(200).json({
                 success: true,
