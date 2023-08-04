@@ -36,6 +36,7 @@ module.exports = {
     /**Add Card */
 
     addCard: async (req, res) => {
+
         stripe.tokens.create(
             {
                 card: {
@@ -57,10 +58,11 @@ module.exports = {
                     });
                 } else {
                     /**If user is alreadyregistered on stripe  */
-                    // console.log(token, "----------------------token")
+                    //console.log(token, "----------------------token")
+    
                     if (
-                        req.identity.customer_id != undefined &&
-                        req.identity.customer_id != ''
+                        req.identity.stripe_customer_id != undefined &&
+                        req.identity.stripe_customer_id != ''
                     ) {
                         // console.log("adding new card")
 
@@ -79,9 +81,8 @@ module.exports = {
                                 },
                             });
                         }
-
                         stripe.customers.createSource(
-                            req.identity.customer_id,
+                            req.identity.stripe_customer_id,
                             {
                                 source: token.id,
                             },
@@ -92,20 +93,20 @@ module.exports = {
                                         error: { code: 404, message: err.raw.message },
                                     });
                                 }
-                                try {
-                                    /**Making last added card default on stripe */
-                                    // const updatedcustomer = await stripe.customers.update(
-                                    //   req.identity.customer_id,
-                                    //   {
-                                    //     default_source: customer.id,
-                                    //   }
-                                    // );
-                                } catch (err) {
-                                    return res.status(400).json({
-                                        success: false,
-                                        error: { code: 404, message: '' + err },
-                                    });
-                                }
+                                // try {
+                                //     /**Making last added card default on stripe */
+                                //     const updatedcustomer = await stripe.customers.update(
+                                //       req.identity.customer_id,
+                                //       {
+                                //         default_source: customer.id,
+                                //       }
+                                //     );
+                                // } catch (err) {
+                                //     return res.status(400).json({
+                                //         success: false,
+                                //         error: { code: 404, message: '' + err },
+                                //     });
+                                // }
 
                                 addedCard = {
                                     userId: req.identity.id,
@@ -122,7 +123,7 @@ module.exports = {
                                     updatedAt: new Date(),
                                     // isDefault: true,
                                 };
-                                console.log(addedCard, "-----------------------addedCard")
+                               // console.log(addedCard, "-----------------------addedCard")
                                 const existedUserCards = await Cards.find({ userId: req.identity.id })
                                 if (existedUserCards && existedUserCards.length == 0) {
                                     addedCard.isDefault = true
@@ -131,7 +132,7 @@ module.exports = {
 
                                 var createdCard = await Cards.create(addedCard)
                                 var updated = Users.updateOne({ id: req.identity.id }, {
-                                    customer_id: customer.id,
+                                    stripe_customer_id: customer.id,
                                 })
                                 console.log(updated, "updated")
 
