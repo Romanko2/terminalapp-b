@@ -38,6 +38,9 @@ module.exports = {
     countryCode: {
       type: 'string',
     },
+    dialCode: {
+      type: 'string',
+    },
     image: {
       type: 'string',
     },
