@@ -453,6 +453,86 @@ module.exports = {
       message: "Video Deleted Successfully.",
     });
   },
+  imageDeleteFromFolder: (req, res) => {
+
+    var imageArrayPath = [];
+    var errorMessageArray = [];
+    var errorAccessMessage = [];
+    var errorMessage = "";
+    var count = 0;
+
+    var imageName = req.query.imageName;
+    var modelName = req.query.modelName;
+
+    if (!imageName || typeof imageName == undefined) {
+      res.status(400).json({
+        success: false,
+        error: { code: 400, message: "Image Name required" },
+      });
+    }
+    if (!modelName || typeof modelName == undefined) {
+      res.status(400).json({
+        success: false,
+        error: { code: 400, message: "Modelname required" },
+      });
+    }
+
+    // define folders path
+    var rootpath = process.cwd();
+    var rootimagepath = rootpath + "/assets/images/" + imageName;
+    var fullpath = rootpath + "/assets/images/" + modelName + "/" + imageName;    
+    imageArrayPath.push(rootimagepath);
+    imageArrayPath.push(fullpath);
+
+    var async = require("async");
+    var errorAccessMessage = [];
+    async.forEachOf(
+      imageArrayPath,
+      function (path, key, callback) {
+        fs.access(path, fs.F_OK, (err) => {
+          if (err) {
+            errorMessage = "No such file exist in directory image: " + err.path;
+            errorAccessMessage.push(errorMessage);
+            callback();
+          } else {
+            fs.unlink(path, function (err) {
+              count = count + 1;
+              callback();
+            });
+          }
+        });
+      },
+      async function (err) {
+        if (err) {
+          console.log("Error: " + err);
+        } else {
+          console.log(count);
+          if (count > 0) {
+            res.status(200).json({
+              success: true,
+              message: "Image deleted successfully",
+            });
+          }
+
+          if (errorAccessMessage.length !== 0 || errorMessageArray !== 0) {
+            res.status(400).json({
+              success: false,
+              data: {
+                error: {
+                  accesserror: errorAccessMessage,
+                  unlinkerror: errorMessageArray,
+                },
+              },
+            });
+          }
+        }
+      }
+    );
+
+
+
+
+  },
 };
 
 function timeConvert(n) {
