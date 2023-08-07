@@ -54,12 +54,14 @@ module.exports = {
             let limit = req.param("limit");
             let offset = req.param("offset");
             let dateWise = req.param("date");
+            let interval = req.param("interval");
             let url ="";
             if(dateWise){
-                url = `http://api.marketstack.com/v1/intraday/${dateWise}?access_key=${credentials.access_key}&symbols=${symbol}`
+                url = `http://api.marketstack.com/v1/intraday/${dateWise}?access_key=${credentials.access_key}&symbols=${symbol}&limit=1000&offset=0&interval=${interval}`
             }else{
                 url = `http://api.marketstack.com/v1/intraday?access_key=${credentials.access_key}&symbols=${symbol}&limit=${limit}&offset=${offset}`
             }
+            //console.log(url);
        
             let {data} = await axios.get(url)
         
